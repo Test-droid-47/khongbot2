@@ -2,7 +2,10 @@ import numpy as np
 import pandas as pd
 from typing import Dict
 from scipy.stats import linregress
-from scipy.signal import cwt, ricker
+try:
+    from scipy.signal import cwt, ricker
+except ImportError:
+    from scipy.signal._wavelets import cwt, ricker
 
 class FeatureEngine:
 
