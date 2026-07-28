@@ -12,10 +12,10 @@ from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple, Any
 from tqdm import tqdm
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] ='2'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] ='3'
 warnings.filterwarnings('ignore', message='Gradients do not exist')
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -25,6 +25,7 @@ from prediction_model import PredictionModel
 from ensemble_model import ExpertEnsemble
 from ppo_agent import PPOAgent
 from trading_env import TradingEnvironment
+warnings.filterwarnings("ignore", message="X does not have valid feature names")
 
 logger = logging.getLogger('TrainingPipeline')
 logging.basicConfig(
