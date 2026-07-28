@@ -300,25 +300,11 @@ class PredictionModel:
 
         self.model.compile(
             optimizer=AdamW(learning_rate=lr_schedule, weight_decay=1e-4),
-            loss={
-                'aux_returns': 'huber',
-                'aux_envelope': 'huber',
-                'aux_target_hit': 'binary_crossentropy',
-                'embedding': None
-            },
-            loss_weights={
-                'aux_returns': 1.0,
-                'aux_envelope': 1.0,
-                'aux_target_hit': 1.0,
-                'embedding': 0.0
-            },
-            metrics={
-                'aux_returns': ['mae'],
-                'aux_envelope': ['mae'],
-                'aux_target_hit': ['accuracy']
-            }
+            loss=['huber', 'huber', 'binary_crossentropy', None],
+            loss_weights=[1.0, 1.0, 1.0, 0.0],
+            metrics=[['mae'], ['mae'], ['accuracy'], []]
         )
-
+            
         X_train_multi = self._split_to_multi_input(X_train)
         X_val_multi = self._split_to_multi_input(X_val)
 
@@ -334,8 +320,9 @@ class PredictionModel:
         ]
 
         history = self.model.fit(
-            X_train_multi, y_train,
-            validation_data=(X_val_multi, y_val),
+            X_train_multi,
+            [y_train['aux_returns'], y_train['aux_envelope'], y_train['aux_target_hit']],
+            validation_data=(X_val_multi, [y_val['aux_returns'], y_val['aux_envelope'], y_val['aux_target_hit']]),
             epochs=self.cfg.get('epochs', 50),
             batch_size=self.cfg.get('batch_size', 32),
             callbacks=callbacks,
