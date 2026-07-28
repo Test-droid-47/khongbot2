@@ -1,5 +1,3 @@
-[file name]: trading_env.py
-[file content begin]
 import numpy as np
 import pandas as pd
 from typing import Dict, List, Optional, Tuple, Any
